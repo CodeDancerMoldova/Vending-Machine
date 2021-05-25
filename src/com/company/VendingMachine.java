@@ -2,7 +2,9 @@ package com.company;
 
 import com.company.Exceptions.NotFullPaidException;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class VendingMachine implements IVendingMachine{
@@ -11,7 +13,7 @@ public class VendingMachine implements IVendingMachine{
     public ArrayList<Coin> coinsInventory = new ArrayList<>();
     public List<Coin> currentCoins = new ArrayList<>();
 
-private Item currentItem;
+private ArrayList<Item> currentItems = new ArrayList<>();
 private boolean insertedCoin = false;
 public int currentBalance = 0;
 
@@ -41,9 +43,8 @@ private int balance = 0;
 
     @Override
     public int selectProductAndGetPrice(Item item){
-        currentItem = null;
         if(itemInventory.contains(item)){
-            currentItem = item;
+            currentItems.add(item);
             return item.getPrice();
         }
         return 0;
@@ -52,18 +53,25 @@ private int balance = 0;
     @Override
     public Cart returnCart() throws NotFullPaidException {
            int remaining;
+           int finalPrice = 0;
            List<Coin> rest = new ArrayList<>();
-           if(currentItem.getPrice() == currentBalance){
+           List<Item> myItems= new ArrayList<>();
+           for(Item item :currentItems){
+               finalPrice+=item.getPrice();
+           }
+           if(finalPrice == currentBalance){
                balance+=currentBalance;
                currentBalance = 0;
-               return new Cart(currentItem,rest);
+               myItems.addAll(currentItems);
+               currentItems.clear();
+               return new Cart(myItems,rest);
            }
-           else if(currentItem.getPrice() > currentBalance){
-               remaining = currentItem.getPrice() - currentBalance;
+           else if(finalPrice > currentBalance){
+               remaining = finalPrice - currentBalance;
                throw new NotFullPaidException("You must pay the remaining money ", remaining);
            }
-           else if(currentItem.getPrice() < currentBalance){
-               remaining = currentBalance - currentItem.getPrice();
+           else if(finalPrice < currentBalance){
+               remaining = currentBalance - finalPrice;
                 while (remaining > 0){
                     if(remaining>=Coin.QUARTER.getDenomination() && coinsInventory.contains(Coin.QUARTER)){
                         remaining -= Coin.QUARTER.getDenomination();
@@ -88,7 +96,9 @@ private int balance = 0;
                 balance+=currentBalance;
                 currentBalance = 0;
                 currentCoins.clear();
-                return new Cart(currentItem,rest);
+                myItems.addAll(currentItems);
+                currentItems.clear();
+                return new Cart(myItems,rest);
            }
 
         return null;
@@ -100,13 +110,13 @@ private int balance = 0;
         itemInventory.clear();
         currentCoins.clear();
         balance = 0;
-        currentItem = null;
+        currentItems.clear();
         fulfill();
     }
 
     @Override
     public void refund() {
-        if(insertedCoin == true){
+        if(insertedCoin){
             for(Coin c : currentCoins){
                 coinsInventory.remove(c);
                 currentBalance-=c.getDenomination();

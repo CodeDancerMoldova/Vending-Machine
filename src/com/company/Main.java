@@ -17,7 +17,12 @@ public class Main {
 
         vendingMachine.insertCoin(Coin.QUARTER);
         vendingMachine.insertCoin(Coin.NICKLE);
+        vendingMachine.insertCoin(Coin.PENNY);
+        vendingMachine.insertCoin(Coin.NICKLE);
+        vendingMachine.insertCoin(Coin.PENNY);
+
         System.out.println(vendingMachine.selectProductAndGetPrice(Item.SNACKS));
+        System.out.println(vendingMachine.selectProductAndGetPrice(Item.SELTZER));
         vendingMachine.returnCart().printCart();
 
     }

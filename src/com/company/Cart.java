@@ -4,22 +4,21 @@ import java.util.List;
 
 public class Cart {
 
-    private Item item;
+    private List<Item> items;
     private List<Coin> coins;
 
-    public Cart(Item item, List<Coin> coins) {
-        this.item = item;
+    public Cart(List<Item> items, List<Coin> coins) {
+        this.items = items;
         this.coins = coins;
     }
 
-    public Item getItem() {
-        return item;
-    }
-
-
     public void printCart(){
         int finalChange=0;
-        System.out.print("The product:" + item.getName());
+        System.out.print("The products are:");
+        for(Item item : items){
+            System.out.print(" " + item.getName() );
+        }
+
         if(coins==null){
             System.out.println("No change!");
         }
