@@ -59,6 +59,9 @@ public  abstract class VendingMachine{
                currentBalance = 0;
                myItems.addAll(currentItems);
                currentItems.clear();
+               for(Item i : myItems){
+                   itemInventory.remove(i);
+               }
                return new Cart(myItems,rest);
            }
            else if(finalPrice > currentBalance){
@@ -93,6 +96,9 @@ public  abstract class VendingMachine{
                 currentCoins.clear();
                 myItems.addAll(currentItems);
                 currentItems.clear();
+               for(Item i : myItems){
+                   itemInventory.remove(i);
+               }
                 return new Cart(myItems,rest);
            }
 
