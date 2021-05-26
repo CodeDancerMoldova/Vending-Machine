@@ -1,4 +1,4 @@
-package com.company;
+package com.company.src.Enums;
 
 import lombok.AllArgsConstructor;
 

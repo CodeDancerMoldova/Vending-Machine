@@ -1,4 +1,4 @@
-package com.company.Exceptions;
+package com.company.src.Exceptions;
 
 
 public class NotFullPaidException extends RuntimeException{
