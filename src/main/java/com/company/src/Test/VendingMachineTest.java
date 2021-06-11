@@ -78,5 +78,15 @@ public class VendingMachineTest {
 
     }
 
+    @Test
+    public void testRefund(){
+        int price = medVendingMachine.selectProductAndGetPrice(Med.MEDICALFACEMASK);
+        medVendingMachine.insertCoin(Coin.PENNY);
+        medVendingMachine.insertCoin(Coin.PENNY);
+        medVendingMachine.insertCoin(Coin.PENNY);
+        medVendingMachine.refund();
+        medVendingMachine.insertCoin(Coin.PENNY);
+        assertEquals(medVendingMachine.getCurrentCoins().get(0),Coin.PENNY);
+    }
 
 }
