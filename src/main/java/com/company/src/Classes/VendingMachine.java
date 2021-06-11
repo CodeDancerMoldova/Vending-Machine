@@ -6,17 +6,22 @@ import com.company.src.Exceptions.NotInStock;
 import com.company.src.Interfaces.Item;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public  abstract class VendingMachine{
 
-    protected ArrayList<Item> itemInventory = new ArrayList<>();
-    protected ArrayList<Coin> coinsInventory = new ArrayList<>();
-    private List<Coin> currentCoins = new ArrayList<>();
-    private ArrayList<Item> currentItems = new ArrayList<>();
+    protected List<Item> itemInventory = new ArrayList<>();
+    protected LinkedList<Coin> coinsInventory = new LinkedList<>();
+    private   List<Coin> currentCoins = new ArrayList<>();
+    private   List<Item> currentItems = new ArrayList<>();
     private boolean insertedCoin = false;
     private int currentBalance = 0;
     private int balance = 0;
+
+    public List<Coin> getCurrentCoins() {
+        return currentCoins;
+    }
 
     public VendingMachine() {
         for(Coin coin : Coin.values()){
@@ -118,7 +123,7 @@ public  abstract class VendingMachine{
     public void refund() {
         if(insertedCoin){
             for(Coin c : currentCoins){
-                coinsInventory.remove(c);
+                coinsInventory.removeFirstOccurrence(c);
                 currentBalance-=c.getDenomination();
             }
             insertedCoin = false;
